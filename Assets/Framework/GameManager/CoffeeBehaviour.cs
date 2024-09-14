@@ -7,7 +7,7 @@ namespace CoffeeFramework
 public class CoffeeBehaviour : MonoBehaviour
 {
     //private
-    private void Awake()
+    protected virtual void Awake()
     {
         Regist();
     }

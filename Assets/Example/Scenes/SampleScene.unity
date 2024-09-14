@@ -687,6 +687,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 254496216eff14b2fa5230a8f69b8edb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 3
+  jumpSpeed: 10
 --- !u!4 &1580174657
 Transform:
   m_ObjectHideFlags: 0
@@ -717,7 +719,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -877,7 +879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: 276
   right: 275
-  jump: 32
+  jump: 273
 --- !u!1 &2006309581
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,23 +5,24 @@ using CoffeeFramework;
 
 public class MoveController : CoffeeBehaviour
 {
-    public override void GameUpdate(float time)
-    {
-        if(InputManager.GetKeyDown(InputManager.Key.a)){
-        Debug.Log("Down");
-        }
-        if(InputManager.GetKeyUp(InputManager.Key.a)){
-        Debug.Log("Up");
-        }
+    public float speed=10;
+    public float jumpSpeed=10;
+    Rigidbody2D rb;
+    protected override void Awake(){
+        base.Awake();
+        rb=GetComponent<Rigidbody2D>();
     }
 
     public override void GameFixedUpdate(float time)
     {
-        if(InputManager.GetKeyDownFixed(InputManager.Key.a)){
-        Debug.Log("FixedDown");
+        if(InputManager.GetKey(InputManager.Key.left)){
+            rb.velocity=new Vector2(-1*speed,rb.velocity.y);
         }
-        if(InputManager.GetKeyUpFixed(InputManager.Key.a)){
-        Debug.Log("FixedUp");
+        if(InputManager.GetKey(InputManager.Key.right)){
+            rb.velocity=new Vector2(1*speed,rb.velocity.y);
+        }
+        if(InputManager.GetKeyDownFixed(InputManager.Key.a)){
+            rb.velocity=new Vector2(rb.velocity.x,jumpSpeed);
         }
     }
 }
