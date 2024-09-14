@@ -31,10 +31,13 @@ namespace CoffeeFramework
                 {
                     Instance.OnFixedUpdate += fixedUpdate;
                 }
+                if (pause != null)
+                {
+                    Instance.OnPauseChange += pause;
+                }
             }
             else
             {
-
                 holdRegists.Add((update, fixedUpdate, pause));
             }
         }
@@ -84,9 +87,9 @@ namespace CoffeeFramework
 
         private event GameUpdate OnUpdate;
 
-        public event GameFixedUpdate OnFixedUpdate;
+        private event GameFixedUpdate OnFixedUpdate;
 
-        public event GamePause OnPauseChange;
+        private event GamePause OnPauseChange;
 
         private void Awake()
         {
@@ -107,6 +110,7 @@ namespace CoffeeFramework
             }
             else
             {
+                Init();
                 Instance = this;
             }
         }
@@ -156,9 +160,9 @@ namespace CoffeeFramework
             while (timmer > fixedUpdateTimeGap)
             {
                 timmer -= fixedUpdateTimeGap;
-                OnFixedUpdate.Invoke(fixedUpdateTimeGap);
+                OnFixedUpdate?.Invoke(fixedUpdateTimeGap);
             }
-            OnUpdate.Invoke(Time.deltaTime);
+            OnUpdate?.Invoke(Time.deltaTime);
         }
     }
 

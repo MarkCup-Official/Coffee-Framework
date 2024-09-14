@@ -35,17 +35,17 @@ public class CoffeeBehaviour : MonoBehaviour
         GameManager.RegistBehaviour(updateMethod,fixedUpdateMethod,pauseMethod);
     }
 
-    protected virtual void GameUpdate(float time)
+    public virtual void GameUpdate(float time)
     {
 
     }
 
-    protected virtual void GameFixedUpdate(float time)
+    public virtual void GameFixedUpdate(float time)
     {
 
     }
 
-    protected virtual void GamePause(bool isPause)
+    public virtual void GamePause(bool isPause)
     {
 
     }
