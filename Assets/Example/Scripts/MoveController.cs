@@ -7,6 +7,21 @@ public class MoveController : CoffeeBehaviour
 {
     public override void GameUpdate(float time)
     {
-        Debug.Log("Update");
+        if(InputManager.GetKeyDown(InputManager.Key.a)){
+        Debug.Log("Down");
+        }
+        if(InputManager.GetKeyUp(InputManager.Key.a)){
+        Debug.Log("Up");
+        }
+    }
+
+    public override void GameFixedUpdate(float time)
+    {
+        if(InputManager.GetKeyDownFixed(InputManager.Key.a)){
+        Debug.Log("FixedDown");
+        }
+        if(InputManager.GetKeyUpFixed(InputManager.Key.a)){
+        Debug.Log("FixedUp");
+        }
     }
 }

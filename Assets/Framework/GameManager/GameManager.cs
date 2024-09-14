@@ -14,6 +14,9 @@ namespace CoffeeFramework
 
         public static GameManager Instance { get; private set; }
 
+        public static int fixedTickCount{get;private set;}
+        public static int updateTickCount{get;private set;}
+
         /// <summary>
         /// To regist a coffee behaciour object
         /// </summary>
@@ -161,8 +164,10 @@ namespace CoffeeFramework
             {
                 timmer -= fixedUpdateTimeGap;
                 OnFixedUpdate?.Invoke(fixedUpdateTimeGap);
+                fixedTickCount+=1;
             }
             OnUpdate?.Invoke(Time.deltaTime);
+            updateTickCount+=1;
         }
     }
 

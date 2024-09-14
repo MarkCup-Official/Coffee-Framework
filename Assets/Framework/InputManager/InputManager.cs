@@ -93,6 +93,32 @@ namespace CoffeeFramework
             return instance.isUp[key];
         }
 
+        /// <summary>
+        /// Get whether a key be pressed down in this frame, should only be called in FixedUpdate.
+        /// And only could be use when called GetKey in update before.
+        /// </summary>
+        /// <param name="key">Key code</param>
+        /// <returns>Whether a key be pressed down in this frame</returns>
+        public static bool GetKeyDownFixed(Key key)
+        {
+            CheckAndInit();
+            instance.GetInput();
+            return instance.isFixedDown[key];
+        }
+
+        /// <summary>
+        /// Get whether a key be released in this frame, should only be called in FixedUpdate.
+        /// And only could be use when called GetKey in update before.
+        /// </summary>
+        /// <param name="key">Key code</param>
+        /// <returns>Whether a key be released in this frame</returns>
+        public static bool GetKeyUpFixed(Key key)
+        {
+            CheckAndInit();
+            instance.GetInput();
+            return instance.isFixedUp[key];
+        }
+
         public delegate (Key, bool)[] SetKey();
 
         /// <summary>
@@ -112,7 +138,13 @@ namespace CoffeeFramework
         private readonly Dictionary<Key, bool> lastFrameRaw = new();
         private readonly Dictionary<Key, bool> raw = new();
 
-        private int updatedFrame;
+        private int updatedFrame = -1;
+
+        private readonly Dictionary<Key, bool> isFixedDown = new();
+        private readonly Dictionary<Key, bool> isFixedUp = new();
+
+        private int fixedUpdatedFrame = -1;
+
         private readonly Key[] keys = (Key[])Enum.GetValues(typeof(Key));
 
         private static void CheckAndInit()
@@ -132,16 +164,32 @@ namespace CoffeeFramework
                 isUp[key] = false;
                 lastFrameRaw[key] = false;
                 raw[key] = false;
+                isFixedDown[key] = false;
+                isFixedUp[key] = false;
             }
             updatedFrame = -1;
+            fixedUpdatedFrame = -1;
         }
 
         private void GetInput()
         {
-            int nowFrame = Time.frameCount;
-            if (updatedFrame != nowFrame)
+            //fixdeUpdate
+            int nowFixedUpdateFrame = GameManager.fixedTickCount;
+            if (fixedUpdatedFrame != nowFixedUpdateFrame)
             {
-                updatedFrame = nowFrame;
+                fixedUpdatedFrame=nowFixedUpdateFrame;
+                foreach (Key key in keys)
+                {
+                    isFixedDown[key] = false;
+                    isFixedUp[key] = false;
+                }
+            }
+
+            //update
+            int nowUpdateFrame = GameManager.updateTickCount;
+            if (updatedFrame != nowUpdateFrame)
+            {
+                updatedFrame = nowUpdateFrame;
                 List<(Key, bool)> rawInput = InvokeInputeEvents();
                 foreach (Key key in keys)
                 {
@@ -167,6 +215,7 @@ namespace CoffeeFramework
                     if (!lastFrameRaw[pair.Key] && pair.Value)
                     {
                         isDown[pair.Key] = true;
+                        isFixedDown[pair.Key] = true;
                     }
                     else
                     {
@@ -175,6 +224,7 @@ namespace CoffeeFramework
                     if (lastFrameRaw[pair.Key] && !pair.Value)
                     {
                         isUp[pair.Key] = true;
+                        isFixedUp[pair.Key] = true;
                     }
                     else
                     {
@@ -190,7 +240,7 @@ namespace CoffeeFramework
             List<(Key, bool)> res = new();
             if (SetKeyEvent != null)
             {
-                foreach (SetKey handler in (SetKey[])SetKeyEvent.GetInvocationList())
+                foreach (SetKey handler in SetKeyEvent.GetInvocationList())
                 {
                     try
                     {
