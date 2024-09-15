@@ -9,6 +9,8 @@ namespace CoffeeFramework
     /// Using call back function to get input value, this will prevent the delay of input
     /// To set input you should use adapter to respond an input quest in SetKeyEvent
     /// 
+    /// Rely on GameManager
+    /// 
     ///  <summary>
     /// Every input be get in this project should use this input manager, and this class could be only called on main thread
     /// </summary>
